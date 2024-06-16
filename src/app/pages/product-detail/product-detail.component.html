@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="product-detail-container">
+    <div class="thumbnail">
+      <img [src]="product?.thumbnail" alt="Product Thumbnail">
+    </div>
+    <div class="product-info">
+      <h2>{{ product?.title }}</h2>
+      <p class="category"><strong>Category:</strong> {{ product?.category }}</p>
+      <p class="description">{{ product?.description }}</p>
+      <p class="price"><strong>Price:</strong> {{ product?.price | currency: 'USD' }}</p>
+      <div class="add-to-cart">
+        <div class="quantity-container">
+          <label for="quantity">Quantity: </label>
+          <input type="number" id="quantity" min="1" class="quantity-input" [(ngModel)]="quantity">
+        </div>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="reviews">
+    <h3>Reviews (<span class="review-count">{{ product?.reviews?.length }}</span>)</h3>
+    <ul>
+      @for (review of product?.reviews; let index = $index; track index) {
+      <li class="review-item">
+        <div class="review-header">
+          <span class="rating">
+            <span class="star-rating">
+              @for(item of [1, 2, 3, 4, 5]; let index = $index; track index) {
+              <i class="fas fa-star" [ngClass]="{'checked': review.rating >= item}"></i>
+              }
+            </span>
+          </span>
+          <span class="reviewer">{{ review.reviewerName }}</span>
+          <span class="date">{{ review.date | date }}</span>
+        </div>
+        <p class="comment">{{ review.comment }}</p>
+      </li>
+      }
+    </ul>
+  </div>
+</div>

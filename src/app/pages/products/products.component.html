@@ -16,5 +16,12 @@
       <app-product [product]="product"></app-product>
       }
     </div>
+    <div class="pagination-controls">
+      <button [disabled]="currentPage === 1">Previous</button>
+      @for (page of getPaginationRange(); track $index) {
+      <button [class.active]=" currentPage===page" [disabled]="page === '...'">{{ page }} </button>
+      }
+      <button [disabled]="currentPage === totalPages">Next</button>
+    </div>
   </div>
 </div>

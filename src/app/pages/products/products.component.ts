@@ -19,23 +19,16 @@ export class ProductsComponent implements OnInit, OnDestroy {
   categories: Category[] = [];
   filter: string = 'all';
 
+  currentPage: number = 5;
+  totalItems: number = 0;
+  totalPages: number = 10;
+  itemsPerPage: number = 10;
+  pagesToShow: number = 5;
+
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService
   ) {}
-
-  setFilter(filter: string) {
-    this.filter = filter;
-    this.getAllProducts();
-  }
-
-  getAllProducts() {
-    this.subscriptions.add(
-      this.productService
-        .getAllProducts(this.filter)
-        .subscribe((products) => (this.products = products))
-    );
-  }
 
   ngOnInit() {
     this.subscriptions.add(
@@ -44,6 +37,44 @@ export class ProductsComponent implements OnInit, OnDestroy {
         .subscribe((categories) => (this.categories = categories))
     );
     this.getAllProducts();
+  }
+
+  setFilter(filter: string) {
+    this.filter = filter;
+    this.getAllProducts();
+  }
+
+  getAllProducts() {
+    this.subscriptions.add(
+      this.productService.getAllProducts(this.filter).subscribe((products) => {
+        this.products = products;
+        this.totalItems = products.length;
+      })
+    );
+  }
+
+  getPaginationRange(): (string | number)[] {
+    const start = Math.max(
+      1,
+      this.currentPage - Math.floor(this.pagesToShow / 2)
+    );
+    const end = Math.min(this.totalPages, start + this.pagesToShow - 1);
+
+    console.log(start, end);
+
+    let pages: (string | number)[] = [];
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    console.log(pages);
+    if (start > 1) {
+      pages = [1, '...'].concat(pages);
+    }
+    if (end < this.totalPages) {
+      pages = pages.concat(['...', this.totalPages]);
+    }
+
+    return pages;
   }
 
   ngOnDestroy(): void {

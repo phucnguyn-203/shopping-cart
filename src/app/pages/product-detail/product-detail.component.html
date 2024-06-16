@@ -21,12 +21,12 @@
   <div class="reviews">
     <h3>Reviews (<span class="review-count">{{ product?.reviews?.length }}</span>)</h3>
     <ul>
-      @for (review of product?.reviews; let index = $index; track index) {
+      @for (review of product?.reviews; track $index) {
       <li class="review-item">
         <div class="review-header">
           <span class="rating">
             <span class="star-rating">
-              @for(item of [1, 2, 3, 4, 5]; let index = $index; track index) {
+              @for(item of [1, 2, 3, 4, 5]; track $index) {
               <i class="fas fa-star" [ngClass]="{'checked': review.rating >= item}"></i>
               }
             </span>
